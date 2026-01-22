@@ -7,3 +7,5 @@ A Simple Mod adding QoL to Elytra flight
 • The drag coeficient, the fallDistance cap and the minimum speed required to apply drag can be modified through the config file.
 
 *This is my first mod i have no idea what i am doing but it just works™*
+
+[Get it from Modrinth](https://modrinth.com/mod/elytra-drag)
