@@ -3,10 +3,12 @@
 	"package": "net.bl4st.elytradrag.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"FireworkRocketEntitySuppressor",
-		"ElytraDragAnimation"
+		"FireworkRocketEntitySuppressor"
 	],
 	"injectors": {
 		"defaultRequire": 1
-	}
+	},
+	"client": [
+		"ElytraDragAnimation"
+	]
 }

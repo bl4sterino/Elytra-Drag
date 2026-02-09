@@ -15,7 +15,6 @@ public class ElytraDrag implements ModInitializer {
 		ModConfig.LoadConfig();
 		ServerTickEvents.END_SERVER_TICK.register(this::ElytraDragTick);
 	}
-
 	private void ElytraDragTick(MinecraftServer server) {
 		var playerList  = server.getPlayerManager().getPlayerList();
 		if(playerList.isEmpty())
@@ -23,7 +22,7 @@ public class ElytraDrag implements ModInitializer {
 
 		for (ServerPlayerEntity spe : playerList)
 		{
-			if(spe.isFallFlying() && spe.isSneaking())
+			if(spe.isGliding() && spe.isSneaking())
 			{
 				spe.getJumpBoostVelocityModifier();
 				var playerVelocity = spe.getVelocity();

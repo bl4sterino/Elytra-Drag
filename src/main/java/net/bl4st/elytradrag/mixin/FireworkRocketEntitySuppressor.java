@@ -22,7 +22,7 @@ public class FireworkRocketEntitySuppressor {
     {
         if(shooter != null)
         {
-            if(shooter.isFallFlying() && shooter.isSneaking())
+            if(shooter.isGliding() && shooter.isSneaking())
                 lifeTime = 0;
         }
     }
