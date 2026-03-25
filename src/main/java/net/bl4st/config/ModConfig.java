@@ -1,45 +1,58 @@
 package net.bl4st.config;
 
-import java.io.*;
-import java.nio.file.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Paths;
 import java.util.Properties;
-
-import net.bl4st.elytradrag.ElytraDrag;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class ModConfig {
-    /**
-     * The drag coefficient to apply when sneaking while flying
-     */
-    public static float ELYTRA_DRAG = 2.0f;
+    public static float ELYTRA_DRAG = 2.0F;
 
-    /**
-     * The Maximum fallDistance for a player sneaking and flying
-     */
-    public static float MAXIMUM_FALLDISTANCE = 15.0f;
+    public static float MAXIMUM_FALLDISTANCE = 15.0F;
 
-    /**
-     * The minimum speed required to apply drag. This is to avoid near-stationary flight
-     */
-    public static float MINIMUM_SPEED = 0.1f;
+    public static float MINIMUM_SPEED = 0.1F;
 
     public static void LoadConfig() {
-        var configPath = Paths.get(FabricLoader.getInstance().getConfigDir().toString(), ElytraDrag.MOD_ID + ".properties").toString();
+        String configPath = Paths.get(FabricLoader.getInstance().getConfigDir().toString(), new String[] { "elytradrag.properties" }).toString();
         Properties properties = new Properties();
-        try (InputStream input = new FileInputStream(configPath)) {
-            properties.load(input);
-
-            // Read values from the properties file
-            ELYTRA_DRAG = Float.parseFloat(properties.getProperty("drag", "2.0"));
-            MAXIMUM_FALLDISTANCE = Float.parseFloat(properties.getProperty("maximum-fall-distance-while-slowing-Down", "15.0"));
-            MINIMUM_SPEED = Float.parseFloat(properties.getProperty("minimum-speed-required", "0.1"));
+        try {
+            InputStream input = new FileInputStream(configPath);
+            try {
+                properties.load(input);
+                ELYTRA_DRAG = Float.parseFloat(properties.getProperty("drag", "2.0"));
+                MAXIMUM_FALLDISTANCE = Float.parseFloat(properties.getProperty("maximum-fall-distance-while-slowing-Down", "15.0"));
+                MINIMUM_SPEED = Float.parseFloat(properties.getProperty("minimum-speed-required", "0.1"));
+                input.close();
+            } catch (Throwable throwable) {
+                try {
+                    input.close();
+                } catch (Throwable throwable1) {
+                    throwable.addSuppressed(throwable1);
+                }
+                throw throwable;
+            }
         } catch (FileNotFoundException e) {
-            // File does not exist, create it with default values
-            try (OutputStream output = new FileOutputStream(configPath)) {
-                properties.setProperty("drag", "2.0");
-                properties.setProperty("maximum-fall-distance-while-slowing-Down", "15.0");
-                properties.setProperty("minimum-speed-required", "0.1");
-                properties.store(output, "Elytra Drag Configuration");
+            try {
+                OutputStream output = new FileOutputStream(configPath);
+                try {
+                    properties.setProperty("drag", "2.0");
+                    properties.setProperty("maximum-fall-distance-while-slowing-Down", "15.0");
+                    properties.setProperty("minimum-speed-required", "0.1");
+                    properties.store(output, "Elytra Drag Configuration");
+                    output.close();
+                } catch (Throwable throwable) {
+                    try {
+                        output.close();
+                    } catch (Throwable throwable1) {
+                        throwable.addSuppressed(throwable1);
+                    }
+                    throw throwable;
+                }
             } catch (IOException ex) {
                 System.err.println("Error creating default config file: " + ex.getMessage());
             }
